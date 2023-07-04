@@ -117,6 +117,47 @@ class Model extends Db
     }
 
     /**
+     * Méthode de mise à jour d'un objet en BDD
+     *
+     * @param integer $id
+     * @param Model $model
+     * @return \PDOStatement|null
+     */
+    public function update(int $id, Model $model): ?\PDOStatement
+    {
+        // Requête SQL à faire :
+        // "UPDATE articles SET titre = :titre, 
+        // description = :description WHERE id = :id"
+
+        // Initialiser les tableaux vides pour récupérer les données
+        $champs = [];
+        $valeurs = [];
+        
+        // On boucle sur l'objet pour récupérer tous les champs et les valeurs
+        foreach($model as $champ => $valeur) {
+            if($valeur !== null && $champ !== 'table'){
+                // actif
+                $champs[] = "$champ = :$champ";
+                
+                // ['actif' => true]
+                if(gettype($valeur) === 'boolean'){
+                    $valeurs[$champ] = (int) $valeur;  // tableau associatif
+                } elseif($valeur instanceof \DateTime) {
+                    $valeurs[$champ] = date_format($valeur, 'Y-m-d H:i:s');
+                } else {
+                    $valeurs[$champ] = $valeur;  // tableau associatif
+                }
+            }
+        }
+
+        $valeurs['id'] = $id;
+
+        $strChamps = implode(', ', $champs);
+        
+        return $this->runQuery("UPDATE $this->table SET $strChamps WHERE id = :id", $valeurs);
+    }
+
+    /**
      * Méthode d'hydratation d'un objet à partir d'un tableau associatif
      *   $donnees = [
      *         'titre' => "Titre de l'objet",

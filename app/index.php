@@ -16,17 +16,21 @@ $article = new ArticleModel();
     // ->setCreatedAt(new \DateTime())
     // ->setActif(false);
 
-var_dump($article);
 
-$data = [
-    'titre' => 'Article avec hydratation',
-    'description' => 'Description de test',
-    'actif' => true,
-];
+$article
+    ->setTitre('Nouveau Titre');
+$article->update(4, $article);
+// var_dump($article);
 
-$article->hydrate($data);
-var_dump($article);
-$article->create($article);
+// $data = [
+//     'titre' => 'Article avec hydratation',
+//     'description' => 'Description de test',
+//     'actif' => true,
+// ];
+
+// $article->hydrate($data);
+// var_dump($article);
+// $article->create($article);
 
 // $article->create($article);
 // var_dump($article->findAll());
