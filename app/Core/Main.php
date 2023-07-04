@@ -3,6 +3,15 @@ namespace App\Core;
 
 class Main
 {
+    public function __construct(
+        private Routeur $router = new Routeur(),
+    ){
+    }
+
+    private function initRouter():void
+    {
+    }
+
     public function start(){
         // On retire le trailing /
         $uri = $_SERVER['REQUEST_URI'];
@@ -17,5 +26,7 @@ class Main
 
             exit();
         }
+
+        $this->router->handleRequest($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
     }
 }
