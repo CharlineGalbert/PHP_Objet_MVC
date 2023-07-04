@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Db\Db;
+use PDOException;
 use PDOStatement;
 
 class Model extends Db
@@ -155,6 +156,17 @@ class Model extends Db
         $strChamps = implode(', ', $champs);
         
         return $this->runQuery("UPDATE $this->table SET $strChamps WHERE id = :id", $valeurs);
+    }
+
+    /**
+     * Méthode de suppression d'une entrée en BDD
+     *
+     * @param integer $id
+     * @return \PDOStatement|null
+     */
+    public function delete(int $id): ?\PDOStatement
+    {
+        return $this->runQuery("DELETE FROM $this->table WHERE id = :id", ['id' => $id]);
     }
 
     /**
