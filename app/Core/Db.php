@@ -1,6 +1,6 @@
 <?php
 // DESIGN PATTERN SINGLETON --> on ne pourra jamais avoir 2 instances de cette classe
-namespace App\Db;
+namespace App\Core;
 
 class Db extends \PDO
 {
