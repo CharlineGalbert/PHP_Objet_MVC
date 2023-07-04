@@ -117,6 +117,39 @@ class Model extends Db
     }
 
     /**
+     * Méthode d'hydratation d'un objet à partir d'un tableau associatif
+     *   $donnees = [
+     *         'titre' => "Titre de l'objet",
+     *         'description' => "Desc",
+     *         'actif' => true,
+     *      ];
+     * 
+     *    RETOURNE :
+     *      $article->setTitre('Titre de l'objet')
+     *              ->SetDescription('Desc')
+     *              ->SetActif(true);
+     *
+     * @param array $donnees
+     * @return void
+     */
+    public function hydrate(array $donnees): self
+    {
+        // On parcourt le tableau de données
+        foreach($donnees as $key => $valeur){
+            // On récupère les setters
+            $setter = 'set' . ucfirst($key);  // ucfirst = mettre la première lettre en majuscule
+            
+            // On vérifie que la méthode existe
+            if(method_exists($this, $setter)) {
+                // $this->setTitre('Test')
+                $this->$setter($valeur);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Fonction pour envoyer n'importe quelle requête SQL en BDD
      *
      * @param string $sql Requête SQL à envoyer
