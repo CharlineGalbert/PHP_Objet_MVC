@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Db\Db;
+use PDOStatement;
 
 class Model extends Db
 {
@@ -29,7 +30,7 @@ class Model extends Db
 
         return $query->fetchAll();
     }
-    
+
     /**
      * Trouve une entrée en BDD de par son ID
      *
@@ -69,6 +70,50 @@ class Model extends Db
 
         // On execute la requete SQL
         return $this->runQuery("SELECT * FROM $this->table WHERE $strChamps", $valeurs)->fetchAll();
+    }
+
+    /**
+     * Fonction de création d'une entrée en BDD
+     *
+     * @param Model $model
+     * @return \PDOStatement|null
+     */
+    public function create(Model $model): ?\PDOStatement
+    {
+        // Requête SQL à faire :
+        // "INSERT INTO articles (titre, description, created_at, actif)
+        // VALUES (:titre, :description, :created_at, :actif)"
+
+        // Initialiser les tableaux vides pour récupérer les données
+        $champs = [];
+        $valeurs = [];
+        $marqueurs = [];
+        
+        // On boucle sur l'objet pour récupérer tous les champs et les valeurs
+        foreach($model as $champ => $valeur) {
+            if($valeur !== null && $champ !== 'table'){
+                // actif
+            $champs[] = $champ;  // tableau à index
+            
+            // ['actif' => true]
+            if(gettype($valeur) === 'boolean'){
+                $valeurs[$champ] = (int) $valeur;  // tableau associatif
+            } elseif($valeur instanceof \DateTime) {
+                $valeurs[$champ] = date_format($valeur, 'Y-m-d H:i:s');
+            } else {
+                $valeurs[$champ] = $valeur;  // tableau associatif
+            }
+            
+            // :actif
+            $marqueurs[] = ":$champ";
+            }
+        }
+        // var_dump($champs, $valeurs, $marqueurs);
+        $strChamps = implode(', ', $champs);
+        $strMarqueurs = implode(', ', $marqueurs);
+        // var_dump($strChamps, $strMarqueurs);
+
+        return $this->runQuery("INSERT INTO $this->table ($strChamps) VALUES ($strMarqueurs)", $valeurs);
     }
 
     /**
