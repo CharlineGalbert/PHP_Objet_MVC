@@ -12,12 +12,10 @@ abstract class Controller  // classe abstraite -> elle ne peut pas être instanc
 
         // var_dump($articles);
         
-        // On démarre le buffer de sortie
-        ob_start();
-
-        require_once ROOT . '/Views/' . $template;
-
-        $contenu = ob_get_clean();
+        // On démarre le buffer de sortie (on met la suite dans le buffer)
+        ob_start(); // pour avoir le contenu de la page après la navbar
+        require_once ROOT . '/Views/' . $template; // idem
+        $contenu = ob_get_clean();  // idem (on vide le buffer de sortie et on récupère ce qu'on avait mis dedans dans la variable $contenu)
 
         require_once ROOT . '/Views/base.php';
     }
