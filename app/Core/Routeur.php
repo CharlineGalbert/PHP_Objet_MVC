@@ -24,7 +24,8 @@ class Routeur
             // On vérifie que l'url du navigateur match avec l'url d'une
             // route existante
             // On vérifie également que la méthode est autorisée sur la route
-            if($url === $route['url'] && in_array($method, $route['methods'])){
+            // preg_match => pour vérifier le regex de l'url
+            if(preg_match("#^" . $route['url'] . "$#", $url, $matches) && in_array($method, $route['methods'])){
                 // On récupère le controller de la route
                 $controllerName = $route['controller'];
 
@@ -34,8 +35,13 @@ class Routeur
                 // On instancie le controller
                 $controller = new $controllerName();
 
+                // On récupère seulement les paramètres potentiels
+                $matches = array_slice($matches, 1);  // on récup. le tabelau matches et on garde à partir de l'index 1
+                // var_dump($matches);
+
                 // On éxecute laméthode du controller pour afficher la page
-                $controller->$actionName();
+                // ArticleController->edit();
+                $controller->$actionName(...$matches); //... récupère toutes les valeurs du tableau $matches
 
                 return;
             }

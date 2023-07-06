@@ -11,5 +11,10 @@ class ArticleController
     {
         echo "Page admin article";
     }
-    
+
+    #[Route('/admin/articles/edit/([0-9]+)', 'admin.articles.edit', ['GET', 'POST'])]
+    public function edit(int $id): void
+    {
+        echo "Page de modification de l'article avec l'id : $id";
+    }
 }
