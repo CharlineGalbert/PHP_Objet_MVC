@@ -35,9 +35,9 @@ class Model extends Db
      * Trouve une entrée en BDD de par son ID
      *
      * @param integer $id
-     * @return array|boolean
+     * @return object|boolean
      */
-    public function find(int $id): array|bool
+    public function find(int $id): object|bool
     {
         return $this->runQuery("SELECT * FROM $this->table WHERE id = :id", ['id' => $id])->fetch();
     }

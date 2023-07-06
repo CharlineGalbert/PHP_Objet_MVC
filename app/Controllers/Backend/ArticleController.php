@@ -2,9 +2,10 @@
 
 namespace App\Controllers\Backend;
 
+use App\Core\Controller;
 use App\Core\Route;
 
-class ArticleController
+class ArticleController extends Controller
 {
     #[Route('/admin/articles', 'admin.articles', ['GET', 'POST'])]
     public function article(): void
