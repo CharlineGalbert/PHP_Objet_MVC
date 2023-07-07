@@ -30,6 +30,7 @@ class UserController extends Controller
                     'nom' => $user->nom,
                     'prenom' => $user->prenom,
                     'email' => $user->email,
+                    'roles' => json_decode($user->roles ?: "[]"),
                 ];
 
                 header('Location: /');

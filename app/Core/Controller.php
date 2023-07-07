@@ -19,4 +19,18 @@ abstract class Controller  // classe abstraite -> elle ne peut pas être instanc
 
         require_once ROOT . '/Views/base.php';
     }
+    /**
+     * Méthode de vérification si utilisateur admin ou non
+     * 
+     * @return void
+     */
+    protected function isAdmin(): void
+    {
+        if(!isset($_SESSION['LOGGED_USER']) || !in_array('ROLE_ADMIN', $_SESSION['LOGGED_USER']['roles'])){
+            $_SESSION['messages']['error'] =  "Vous n'avez pas les droits";
+
+            header('Location: /login');
+            exit();
+        };
+    }
 }

@@ -4,13 +4,21 @@ namespace App\Controllers\Backend;
 
 use App\Core\Controller;
 use App\Core\Route;
+use App\Models\ArticleModel;
 
 class ArticleController extends Controller
 {
     #[Route('/admin/articles', 'admin.articles', ['GET', 'POST'])]
     public function article(): void
     {
-        echo "Page admin article";
+        $this->isAdmin();
+        $articles = (new ArticleModel())->findAll();
+
+        $_SESSION['token'] = bin2hex(random_bytes(35));
+
+        $this->render('Backend/Articles/index.php', [
+            'articles' => $articles,
+        ]);
     }
 
     #[Route('/admin/articles/edit/([0-9]+)', 'admin.articles.edit', ['GET', 'POST'])]
