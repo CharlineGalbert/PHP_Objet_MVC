@@ -57,6 +57,147 @@ class Form
     }
 
     /**
+     * Méthode de génération d'un balise d'ouverture HTML de div
+     *
+     * @param array $attributs Tableau associatif avec les attributs HTML et les valeurs
+     * @return self
+     */
+    public function startDiv(array $attributs = []): self
+    {
+        $this->formCode .= "<div";
+
+        // On ajoute les attributs HTML potentiels
+        $this->formCode .= $attributs ? $this->addAttributes($attributs) . '>' : '>';
+
+        return $this;
+    }
+
+    /**
+     * Méthode de génération de balise de fermeture HTML de div
+     *
+     * @return self
+     */
+    public function endDiv(): self
+    {
+        $this->formCode .= '</div>';
+
+        return $this;
+    }
+
+    /**
+     * Méthode de génération HTML de balise label
+     *
+     * @param string $for
+     * @param string $text
+     * @param array $attributs
+     * @return self
+     */
+    // <label for='toto' class="form-label"> Toto </label>
+    public function addLabel(string $for, string $text, array $attributs = []): self
+    {
+        $this->formCode .= "<label for=\"$for\"";
+
+        $this->formCode .= $attributs ? $this->addAttributes($attributs) . '>' : '>';
+
+        $this->formCode .= "$text</label>";
+
+        return $this;
+    }
+
+    // <input type="text" name="toto" class="toto"/>
+    /**
+     * Méthode de génération d'une balise HTML input
+     *
+     * @param string $type
+     * @param string $name
+     * @param array $attributs
+     * @return self
+     */
+    public function addInput(string $type, string $name, array $attributs = []): self
+    {
+        $this->formCode .= "<input type=\"$type\" name=\"$name\"";
+
+        $this->formCode .= $attributs ? $this->addAttributes($attributs) . '/>' : '/>';
+        
+        return $this;
+    }
+
+    /**
+     * Méthode de génération HTML de la balise button
+     *
+     * @param string $text
+     * @param array $attributs
+     * @return self
+     */
+    public function addButton(string $text, array $attributs = []): self
+    {
+        $this->formCode .= "<button type=\"submit\"";
+
+        $this->formCode .= $attributs ? $this->addAttributes($attributs) . '>' : '>';
+
+        $this->formCode .= "$text</button>";
+
+        return $this;
+    }
+
+    /**
+     * Méthode de génération d'une balise HTML textarea
+     *
+     * @param string $name
+     * @param string $value
+     * @param array $attributs
+     * @return self
+     */
+    // <textarea name="toto">Tfzfgkg</texarea>
+    public function addTextarea(string $name, string $value = '', array $attributs = []): self
+    {
+        $this->formCode .= "<textarea name=\"$name\"";
+
+        $this->formCode .= $attributs ? $this->addAttributes($attributs) . '>' : '>';
+
+        $this->formCode .= "$value</textarea>";
+
+        return $this;
+    }
+
+    /**
+     * Méthode de génération de balise HTML select
+     *
+     * @param string $name
+     * @param array $options
+     * @param array $attributs
+     * @return self
+     */
+    /* [
+            ['ROLE_ADMIN' => [
+                'label' => 'Administrateur',
+                'attributs' => [
+                    'classa => 'toto',
+                    'checked' => true
+                ]
+            ],
+            ['ROLE_EDITOR' => 'Editeur'],
+        ]*/
+    public function addSelect(string $name, array $options, array $attributs = []): self
+    {
+        $this->formCode .= "<select name=\"$name\"";
+
+        $this->formCode .= $attributs ? $this->addAttributes($attributs) . '>' : '>';
+
+        foreach($options as $value => $option){
+            $this->formCode .= "<option value=\"$value\"";
+
+            $this->formCode .= isset($option['attributs']) ? $this->addAttributes($option['attributs']) . '>' : '>';
+            
+            $this->formCode .= "$option[label]</option>";
+        }
+
+        $this->formCode .= "</select>";
+
+        return $this;
+    }
+
+    /**
      * Méthode d'ajout d'attributs HTML
      *
      * @param array $attributs Tableau associatif ex: ['class' => 'form-control', 'required' => true]

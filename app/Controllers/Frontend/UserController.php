@@ -3,20 +3,18 @@
 namespace App\Controllers\Frontend;
 
 use App\Core\Controller;
-use App\Core\Form;
 use App\Core\Route;
+use App\Form\LoginForm;
 
 class UserController extends Controller
 {
     #[Route('/login', 'app.user.login', ['GET', 'POST'])]
     public function login(): void
     {
-        $form = (new Form())
-            ->startForm('POST', '#', [
-                'class' => 'form'
-            ])
-            ->endForm();
+        $form = new LoginForm();
         
-        var_dump($form->create());
+        $this->render('Frontend/login.php', [
+            'form' => $form->create(),
+        ]);
     }
 }
