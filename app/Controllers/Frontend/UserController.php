@@ -5,6 +5,7 @@ namespace App\Controllers\Frontend;
 use App\Core\Controller;
 use App\Core\Route;
 use App\Form\LoginForm;
+use App\Form\RegisterForm;
 use App\Models\UserModel;
 
 class UserController extends Controller
@@ -39,6 +40,49 @@ class UserController extends Controller
         }
         
         $this->render('Frontend/login.php', [
+            'form' => $form->create(),
+        ]);
+    }
+
+    #[Route('/logout', 'app.user.logout', ['GET'])]
+    public function logout(): void
+    {
+        unset($_SESSION['LOGGED_USER']);
+        
+        header('Location: /');
+        exit();
+    }
+
+    #[Route('/register', 'app.user.register', ['GET', 'POST'])]
+    public function register(): void
+    {
+        $form = new RegisterForm();
+
+        if($form->validate($_POST, ['nom', 'prenom', 'email', 'password'])){
+            // Nettoyer des données
+            $nom = strip_tags($_POST['nom']);
+            $prenom = strip_tags($_POST['prenom']);
+            $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+            $password = password_hash($_POST['password'], PASSWORD_ARGON2I);
+
+            if($email){
+                (new UserModel())
+                    ->setNom($nom)
+                    ->setPrenom($prenom)
+                    ->setEmail($email)
+                    ->setPassword($password)
+                    ->create();
+                
+                $_SESSION['messages']['success'] = "Vous êtes bien inscrit à notre application";
+
+                header('Location: /login');
+                exit();
+            }
+        } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $_SESSION['messages']['error'] = "Veuillez remplir tous les champs obligatoires";
+        }
+
+        $this->render('Frontend/register.php', [
             'form' => $form->create(),
         ]);
     }

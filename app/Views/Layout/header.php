@@ -17,9 +17,9 @@
             </div>
             <div class="ms-auto navbar-btn">
                 <?php if(isset($_SESSION['LOGGED_USER'])):?>
-                    <a href="#" class="btn btn-danger">Logout</a>
+                    <a href="/logout" class="btn btn-danger">Logout</a>
                 <?php else:?>
-                    <a href="/login" class="btn btn-light">Logout</a>
+                    <a href="/login" class="btn btn-light">Login</a>
                 <?php endif;?>
             </div>
         </div>
