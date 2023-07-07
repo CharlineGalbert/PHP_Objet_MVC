@@ -76,6 +76,8 @@ class Main
 
     public function start()
     {
+        session_start();
+
         // On retire le trailing /
         $uri = $_SERVER['REQUEST_URI'];
 

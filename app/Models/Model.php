@@ -75,10 +75,9 @@ class Model extends Db
     /**
      * Fonction de création d'une entrée en BDD
      *
-     * @param Model $model
      * @return \PDOStatement|null
      */
-    public function create(Model $model): ?\PDOStatement
+    public function create(): ?\PDOStatement
     {
         // Requête SQL à faire :
         // "INSERT INTO articles (titre, description, created_at, actif)
@@ -90,7 +89,7 @@ class Model extends Db
         $marqueurs = [];
         
         // On boucle sur l'objet pour récupérer tous les champs et les valeurs
-        foreach($model as $champ => $valeur) {
+        foreach($this as $champ => $valeur) {
             if($valeur !== null && $champ !== 'table'){
                 // actif
             $champs[] = $champ;  // tableau à index
@@ -119,11 +118,9 @@ class Model extends Db
     /**
      * Méthode de mise à jour d'un objet en BDD
      *
-     * @param integer $id
-     * @param Model $model
      * @return \PDOStatement|null
      */
-    public function update(int $id, Model $model): ?\PDOStatement
+    public function update(): ?\PDOStatement
     {
         // Requête SQL à faire :
         // "UPDATE articles SET titre = :titre, 
@@ -134,7 +131,7 @@ class Model extends Db
         $valeurs = [];
         
         // On boucle sur l'objet pour récupérer tous les champs et les valeurs
-        foreach($model as $champ => $valeur) {
+        foreach($this as $champ => $valeur) {
             if($valeur !== null && $champ !== 'table'){
                 // actif
                 $champs[] = "$champ = :$champ";
@@ -150,7 +147,7 @@ class Model extends Db
             }
         }
 
-        $valeurs['id'] = $id;
+        $valeurs['id'] = $this->id;
 
         $strChamps = implode(', ', $champs);
         
@@ -181,10 +178,10 @@ class Model extends Db
      *              ->SetDescription('Desc')
      *              ->SetActif(true);
      *
-     * @param array $donnees
+     * @param array|object $donnees
      * @return void
      */
-    public function hydrate(array $donnees): self
+    public function hydrate(array|object $donnees): self
     {
         // On parcourt le tableau de données
         foreach($donnees as $key => $valeur){

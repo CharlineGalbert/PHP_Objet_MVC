@@ -15,6 +15,17 @@ class UserModel extends Model
         $this->table = 'users';
     }
 
+    /**
+     * Méthode de recherche d'utilisateur par email
+     *
+     * @param string $email
+     * @return boolean|object
+     */
+    public function findByEmail(string $email): bool|object
+    {
+        return $this->runQuery("SELECT * FROM $this->table WHERE email = :email", ['email' => $email])->fetch();
+    }
+
         /**
          * Get the value of id
          *

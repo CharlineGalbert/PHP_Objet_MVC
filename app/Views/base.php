@@ -11,6 +11,7 @@
 <body>
     <? include_once "Layout/header.php"; ?>
     <main>
+        <?php include_once "Layout/messages.php"; ?>
         <?= $contenu; ?>
     </main>
 
