@@ -10,6 +10,7 @@ class UserModel extends Model
         protected ?string $prenom = null,
         protected ?string $email = null,
         protected ?string $password = null,
+        protected ?array $roles = null,
         )
     {
         $this->table = 'users';
@@ -142,6 +143,30 @@ class UserModel extends Model
         public function setPassword(?string $password): self
         {
                 $this->password = $password;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of roles
+         *
+         * @return ?array
+         */
+        public function getRoles(): ?array
+        {
+                return $this->roles;
+        }
+
+        /**
+         * Set the value of roles
+         *
+         * @param ?array $roles
+         *
+         * @return self
+         */
+        public function setRoles(?array $roles): self
+        {
+                $this->roles = $roles;
 
                 return $this;
         }

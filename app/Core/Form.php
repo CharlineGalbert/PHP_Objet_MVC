@@ -172,7 +172,7 @@ class Form
             ['ROLE_ADMIN' => [
                 'label' => 'Administrateur',
                 'attributs' => [
-                    'classa => 'toto',
+                    'class => 'toto',
                     'checked' => true
                 ]
             ],
