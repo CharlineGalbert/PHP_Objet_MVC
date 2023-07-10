@@ -1,6 +1,6 @@
 <section class="container mt-4">
     <h1 class="text-center">Administration des articles</h1>
-    <a href="#" class="btn btn-primary">Créer un article</a>
+    <a href="/admin/articles/create" class="btn btn-primary">Créer un article</a>
     <div class="row gy-4 mt-4"> <!--gy = gap vertical-->
         <?php foreach($articles as $article):?>
             <div class="col-md-4">

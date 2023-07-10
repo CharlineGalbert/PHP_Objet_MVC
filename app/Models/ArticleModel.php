@@ -9,6 +9,7 @@ class ArticleModel extends Model
         protected ?string $description = null,
         protected ?\Datetime $created_at = null,
         protected ?bool $actif = null,
+        protected ?int $user_id = null,
         )
     {
         $this->table = 'articles';
@@ -130,6 +131,30 @@ class ArticleModel extends Model
         public function setActif(?bool $actif): self
         {
                 $this->actif = $actif;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of user_id
+         *
+         * @return ?int
+         */
+        public function getUserId(): ?int
+        {
+                return $this->user_id;
+        }
+
+        /**
+         * Set the value of user_id
+         *
+         * @param ?int $user_id
+         *
+         * @return self
+         */
+        public function setUserId(?int $user_id): self
+        {
+                $this->user_id = $user_id;
 
                 return $this;
         }

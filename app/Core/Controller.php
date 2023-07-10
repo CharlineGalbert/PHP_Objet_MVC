@@ -4,7 +4,7 @@ namespace App\Core;
 
 abstract class Controller  // classe abstraite -> elle ne peut pas être instanciée
 {
-    protected function render(string $template, array $data)
+    protected function render(string $template, array $data = [])
     {
         
         // On extrait toutes les valeurs du tableau en créant une variable par entrée du tableau
