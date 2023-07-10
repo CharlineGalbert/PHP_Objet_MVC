@@ -52,7 +52,6 @@ class ArticleController extends Controller
             exit();
         } elseif ($_SERVER['REQUEST_METHOD'] === 'POST'){
             $_SESSION['messages']['error'] = "Veuillez remplir tous les champs obligatoires";
-
         }
 
         // Vue
@@ -64,6 +63,45 @@ class ArticleController extends Controller
     #[Route('/admin/articles/edit/([0-9]+)', 'admin.articles.edit', ['GET', 'POST'])]
     public function edit(int $id): void
     {
-        echo "Page de modification de l'article avec l'id : $id";
+        $this->isAdmin();
+
+        $article = (new ArticleModel)->find($id);
+
+        if(!$article){
+            $_SESSION['messages']['error'] = "Article non trouvé";
+
+            header('Location: /admin/articles');
+            exit();
+        }
+
+        $article = (new ArticleModel)->hydrate($article);
+
+        $form =  new ArticleForm($article);
+
+        if($form->validate($_POST, ['titre', 'description'])){
+          
+            $titre = strip_tags($_POST['titre']);
+            $description = strip_tags($_POST['description']);
+            $actif = isset($_POST['actif']) ? true : false;
+            
+            /** @var ArticleModel $article */
+            $article
+                ->setTitre($titre)
+                ->setDescription($description)
+                ->setActif($actif)
+                ->update();
+            
+            $_SESSION['messages']['success'] = "Article modifié avec succès";
+            
+            header('Location: /admin/articles');
+            exit();
+        } elseif ($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_SESSION['messages']['error'] = "Veuillez remplir tous les champs obligatoires";
+        }
+
+        $this->render('Backend/Articles/edit.php', [
+            'article' => $article,
+            'form' => $form->create(),
+        ]);
     }
 }

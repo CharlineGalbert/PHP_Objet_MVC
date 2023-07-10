@@ -3,10 +3,11 @@
 namespace App\Form;
 
 use App\Core\Form;
+use App\Models\ArticleModel;
 
 class ArticleForm extends Form
 {
-    public function __construct()
+    public function __construct(?ArticleModel $article = null)
     {
         $this
         ->startForm('POST', '#', ['class' => 'form card p-3 w-75 mx-auto'])
@@ -17,11 +18,12 @@ class ArticleForm extends Form
             'placeholder' => 'Titre de votre article',
             'id' => 'titre',
             'required' => true,
+            'value' => $article ? $article->getTitre() : null,
         ])
         ->endDiv()
         ->startDiv(['class' => 'mb-3'])
         ->addLabel('description', "Description :", ['class' => 'form-label'])
-        ->addTextarea('description', '', [
+        ->addTextarea('description', $article ? $article->getDescription() : '', [
             'class' => 'form-control',
             'id' => 'description',
             'placeholder' => 'Description de votre article',
@@ -32,11 +34,12 @@ class ArticleForm extends Form
         ->startDiv(['class' => 'mb-3 form-check'])
         ->addInput('checkbox', 'actif', [
             'class' => 'form-check-input',
-            'id' => 'actif'
+            'id' => 'actif',
+            'checked' => $article ? $article->getActif() : false
         ])
-        ->addLabel('actif', "Actif :", ['class' => 'form-check-label'])
+        ->addLabel('actif', "Actif", ['class' => 'form-check-label'])
         ->endDiv()
-        ->addButton('Créer', ['class' => 'btn btn-primary'])
+        ->addButton($article ? 'Modifier' : 'Créer', ['class' => 'btn btn-primary'])
         ->endForm()
         ;
     }

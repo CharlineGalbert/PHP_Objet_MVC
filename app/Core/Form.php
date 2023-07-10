@@ -214,11 +214,13 @@ class Form
         // On parcourt le tableau d'attribut
         foreach($attributs as $attribut => $value) {
             // Vérification de l'attribut court ou non
-            if(in_array($attribut, $courts) && $value == true) {
-                $str .= "$attribut ";
-            } else {
-                // On ajoute l'attribut = la valeur
-                $str .= " $attribut='$value'";
+            if($value) {
+                if(in_array($attribut, $courts)) {
+                    $str .= "$attribut ";
+                } else {
+                    // On ajoute l'attribut = la valeur
+                    $str .= " $attribut='$value'";
+                }
             }
         }
 

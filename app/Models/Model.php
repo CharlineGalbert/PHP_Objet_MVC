@@ -132,7 +132,7 @@ class Model extends Db
         
         // On boucle sur l'objet pour récupérer tous les champs et les valeurs
         foreach($this as $champ => $valeur) {
-            if($valeur !== null && $champ !== 'table'){
+            if($valeur !== null && $champ !== 'table' && $champ !== 'id'){
                 // actif
                 $champs[] = "$champ = :$champ";
                 
@@ -146,7 +146,7 @@ class Model extends Db
                 }
             }
         }
-
+        /** @var UserModel|ArticleModel $this */
         $valeurs['id'] = $this->id;
 
         $strChamps = implode(', ', $champs);
@@ -179,7 +179,7 @@ class Model extends Db
      *              ->SetActif(true);
      *
      * @param array|object $donnees
-     * @return void
+     * @return self
      */
     public function hydrate(array|object $donnees): self
     {
