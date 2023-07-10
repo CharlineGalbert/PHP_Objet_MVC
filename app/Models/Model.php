@@ -157,12 +157,12 @@ class Model extends Db
     /**
      * Méthode de suppression d'une entrée en BDD
      *
-     * @param integer $id
      * @return \PDOStatement|null
      */
-    public function delete(int $id): ?\PDOStatement
+    public function delete(): ?\PDOStatement
     {
-        return $this->runQuery("DELETE FROM $this->table WHERE id = :id", ['id' => $id]);
+        /** @var UserModel|ArticleModel $this */
+        return $this->runQuery("DELETE FROM $this->table WHERE id = :id", ['id' => $this->id]);
     }
 
     /**

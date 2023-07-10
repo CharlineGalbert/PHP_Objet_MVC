@@ -104,4 +104,28 @@ class ArticleController extends Controller
             'form' => $form->create(),
         ]);
     }
+
+    #[Route('/admin/articles/delete', 'admin.articles.delete', ['POST'])]
+    public function delete(): void
+    {
+        $this->isAdmin();
+
+        $article = (new ArticleModel())->find(isset($_POST['id']) ? $_POST['id'] : 0);
+
+        if($article && hash_equals($_SESSION['token'], $_POST['token'])){
+            $article = (new ArticleModel())
+            ->hydrate($article)
+            ->delete();
+
+            $_SESSION['messages']['success'] = "Article supprimé avec succès";   
+            
+            header('Location: /admin/articles');
+            exit();
+        }
+
+        $_SESSION['messages']['error'] = "Article non trouvé ou token invalide";
+
+        header('Location: /admin/articles');
+        exit();
+    }
 }
