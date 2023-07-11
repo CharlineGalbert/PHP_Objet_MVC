@@ -154,19 +154,21 @@ class UserModel extends Model
          */
         public function getRoles(): ?array
         {
-                return $this->roles;
+                $this->roles[] = "ROLE_USER";
+
+                return array_unique($this->roles);
         }
 
         /**
          * Set the value of roles
          *
-         * @param ?array $roles
+         * @param ?string $roles
          *
          * @return self
          */
-        public function setRoles(?array $roles): self
+        public function setRoles(?string $roles): self
         {
-                $this->roles = $roles;
+                $this->roles = json_decode($roles?: '[]');
 
                 return $this;
         }

@@ -7,7 +7,7 @@ use App\Models\UserModel;
 
 class UserForm extends Form
 {
-    public function __construct(UserModel $user)
+    public function __construct(?UserModel $user = null)
     {
         $this
             ->startForm('POST', '#', [
@@ -20,7 +20,7 @@ class UserForm extends Form
                 'class' => 'form-control',
                 'id' => 'nom',
                 'placeholder' => 'Doe',
-                'value' => $user->getNom(),
+                'value' => $user ? $user->getNom() : null,
             ])
             ->endDiv()
             ->startDiv(['class' => 'col-md-6'])
@@ -29,7 +29,7 @@ class UserForm extends Form
                 'class' => 'form-control',
                 'id' => 'prenom',
                 'placeholder' => 'John',
-                'value' => $user->getPrenom(),
+                'value' => $user ? $user->getPrenom() : null,
             ])
             ->endDiv()
             ->endDiv()
@@ -39,23 +39,24 @@ class UserForm extends Form
                 'class' => 'form-control',
                 'id' => 'email',
                 'placeholder' => 'johndoe@exemple.com',
-                'value' => $user->getEmail(),
+                'value' => $user ? $user->getEmail() : null,
             ])
             ->endDiv()
             ->startDiv(['class' => 'mb-3'])
-            ->addSelect('select', 
+            ->addLabel('roles', "Roles :", ['class' => 'form-label'])
+            ->addSelect('roles', 
             [
                 'ROLE_USER' => [
                                 'label' => 'Utilisateur',
-                                // 'attributs' =>  ['selected' => in_array('ROLE_USER',$user->getRoles()) ? true : null]
+                                'attributs' =>  ['selected' => in_array('ROLE_USER',$user->getRoles()) ? true : null]
                             ],
                 'ROLE_ADMIN' => [
                                 'label' => 'Admin',
-                                // 'attributs' =>  ['selected' => in_array('ROLE_ADMIN',$user->getRoles()) ? true : null]
+                                'attributs' =>  ['selected' => in_array('ROLE_ADMIN',$user->getRoles()) ? true : null]
                             ],
                 'ROLE_EDITOR' => [
                                     'label' => 'Editeur',
-                                    // 'attributs' =>  ['selected' => in_array('ROLE_EDITOR',$user->getRoles()) ? true : null]
+                                    'attributs' =>  ['selected' => in_array('ROLE_EDITOR',$user->getRoles()) ? true : null]
                                 ]
             ],
             [
@@ -63,7 +64,7 @@ class UserForm extends Form
             ]
         )
             ->endDiv()
-            ->addButton('Modifier', ['class' => 'btn btn-primary'])
+            ->addButton($user ? 'Modifier' : 'Créer', ['class' => 'btn btn-primary'])
             ->endForm()
         ;
     }

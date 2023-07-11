@@ -97,7 +97,10 @@ class Model extends Db
             // ['actif' => true]
             if(gettype($valeur) === 'boolean'){
                 $valeurs[$champ] = (int) $valeur;  // tableau associatif
-            } elseif($valeur instanceof \DateTime) {
+            } elseif (gettype($valeur) === 'array'){
+                $valeurs[$champ] = json_encode($valeur);
+            }
+             elseif($valeur instanceof \DateTime) {
                 $valeurs[$champ] = date_format($valeur, 'Y-m-d H:i:s');
             } else {
                 $valeurs[$champ] = $valeur;  // tableau associatif
@@ -139,6 +142,8 @@ class Model extends Db
                 // ['actif' => true]
                 if(gettype($valeur) === 'boolean'){
                     $valeurs[$champ] = (int) $valeur;  // tableau associatif
+                } elseif (gettype($valeur) === 'array'){
+                    $valeurs[$champ] = json_encode($valeur);
                 } elseif($valeur instanceof \DateTime) {
                     $valeurs[$champ] = date_format($valeur, 'Y-m-d H:i:s');
                 } else {
