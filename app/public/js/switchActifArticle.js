@@ -38,7 +38,24 @@ async function sendRequest(input) {  // async : on peut utiliser la fonction n'i
         }
 
         // console.error(card,text);
+    } else {
+        const section = document.querySelector('.container');
+        const data = (await response.json()).data;
+
+        const alert = document.createElement('div');
+        alert.classList.add('alert');
+        alert.classList.add('alert-danger');
+        
+        alert.innerHTML = data.message;
+        
+        if(section.querySelector('.alert')){  // pour éviter que le message d'erreur s'affiche plusieurs fois
+            section.querySelector('.alert').remove();
+        }
+
+        section.prepend(alert);
     }
+
+
     // await : on attend la réponse
     /**
      * back-tick -> on ouvre une chaine de caractère 
