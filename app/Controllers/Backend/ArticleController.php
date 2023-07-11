@@ -128,4 +128,43 @@ class ArticleController extends Controller
         header('Location: /admin/articles');
         exit();
     }
+
+    #[Route('/admin/articles/switch/([0-9]+)', 'admin.articles.switch', ['GET'])] // le numero de l'url est récup/et passé en paramètre dans $id de la fonction 
+    public function switch(int $id): void
+    {
+        $this->isAdmin();
+
+        $article = (new ArticleModel())->find($id);
+
+        if(!$article) {
+            http_response_code(404);
+            echo json_encode([
+                'data' => [
+                    'status' => 'Error',
+                    'message' => 'Article non trouvé, veuillez vérifier l\'id',
+                ]
+            ]);
+
+            return;
+        }
+
+        $article = (new ArticleModel)->hydrate($article);
+        
+        /** @var ArticleModel $article */
+        $article
+            ->setActif(!$article->getActif()) // i.e toggle
+            ->update();
+        
+        http_response_code(201);
+
+        echo json_encode([
+            'data' => [
+                'status' => 'Success',
+                'message' => 'Article modifié',
+                'actif' => $article->getActif(),
+            ]
+        ]);
+
+        return; // ou exit();
+    }
 }

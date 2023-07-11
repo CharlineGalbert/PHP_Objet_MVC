@@ -15,12 +15,23 @@
                     </li>
                 </ul>
             </div>
-            <div class="ms-auto navbar-btn">
-                <?php if(isset($_SESSION['LOGGED_USER'])):?>
+            <div class="ms-auto navbar-btn d-flex">
+                <?php if (isset($_SESSION['LOGGED_USER'])) : ?>
+                    <?php if (in_array('ROLE_ADMIN', $_SESSION['LOGGED_USER']['roles'])) : ?>
+                        <div class="dropdown open me-4">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="triggerId">
+                                <a class="dropdown-item" href="/admin/articles">Articles</a>
+                                <a class="dropdown-item" href="/admin/users">Users</a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <a href="/logout" class="btn btn-danger">Logout</a>
-                <?php else:?>
+                <?php else : ?>
                     <a href="/login" class="btn btn-light">Login</a>
-                <?php endif;?>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
