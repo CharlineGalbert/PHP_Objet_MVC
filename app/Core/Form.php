@@ -227,6 +227,22 @@ class Form
         return $str;
     }
 
+    /**
+     * Méthode de génération de balise HTML img
+     *
+     * @param ?string $path
+     * @param array|null $attributs
+     * @return self
+     */
+    public function addImage(?string $path, ?array $attributs = []): self
+    {
+        $this->formCode .= "<img src=\"$path\"";
+
+        $this->formCode .= $attributs ? $this->addAttributes($attributs) . '>' : '>';
+
+        return $this;
+    }
+
    /**
     * Méthode qui renvoie tout le code HTML du formulaire
     *

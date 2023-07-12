@@ -10,7 +10,10 @@ class ArticleForm extends Form
     public function __construct(?ArticleModel $article = null)
     {
         $this
-        ->startForm('POST', '#', ['class' => 'form card p-3 w-75 mx-auto'])
+        ->startForm('POST', '#', [
+            'class' => 'form card p-3 w-75 mx-auto',
+            'enctype' => 'multipart/form-data',
+            ])
         ->startDiv(['class' => 'mb-3'])
         ->addLabel('titre', "Titre :", ['class' => 'form-label'])
         ->addInput('text', 'titre', [
@@ -31,6 +34,18 @@ class ArticleForm extends Form
             'required' => true,
         ])
         ->endDiv()
+        ->startDiv(['class' => 'mb-3'])
+        ->addLabel('image', "Image :", ['class' => 'form-label'])
+        ->addInput('file', 'image', [
+            'class' => 'form-control',
+        ])
+        ->endDiv()
+        // ternaire dans un ternaire
+        ->addImage($article ? ($article->getImage() ? "/images/articles/{$article->getImage()}" :  null) : null,[
+            'class' => 'img-fluid rounded mt-2',
+            'loading' => "lazy",
+            'alt' => $article ? ($article->getImage() ? $article->getTitre() : null) : null,
+        ])
         ->startDiv(['class' => 'mb-3 form-check'])
         ->addInput('checkbox', 'actif', [
             'class' => 'form-check-input',

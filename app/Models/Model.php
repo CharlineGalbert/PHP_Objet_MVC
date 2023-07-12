@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Core\Db;
+use DateTime;
 use PDOStatement;
 
 class Model extends Db
@@ -167,7 +168,64 @@ class Model extends Db
     public function delete(): ?\PDOStatement
     {
         /** @var UserModel|ArticleModel $this */
+        if($this->image) {
+            $this->deleteImage(ROOT . "/public/images/$this->table/$this->image");
+        }
+        
         return $this->runQuery("DELETE FROM $this->table WHERE id = :id", ['id' => $this->id]);
+    }
+
+    /**
+     * Méthode d'upload d'une image
+     *
+     * @param array $image Superglobal $_FILES
+     * @param boolean $remove Si on veut supprimer une image déjà existante
+     * @return string|boolean Si ok, retourne le nom de l'image, sinon retourne false
+     */
+    public function uploadImage(array $image, bool $remove = false): string|bool
+    {
+        if(!empty($image['name']) && $image['error'] === 0) {
+            if($image['size'] <= 10000000) {
+                $fileInfo = pathInfo($image['name']);
+                $extension = $fileInfo['extension'];
+                $extensionAllowed = ['jpeg','jpg', 'png', 'gif', 'svg','wepb'];
+
+                if(in_array($extension, $extensionAllowed)){
+                    $nom = $fileInfo['filename'] . date_format(new DateTime, 'Y-m-d_H_i_s') . '.' . $extension;
+                    
+                    if(!is_dir(ROOT . "/public/images/$this->table")) {
+                        mkdir(ROOT . "/public/images/$this->table");
+                    }
+
+                    move_uploaded_file($image['tmp_name'], ROOT . "/public/images/$this->table/$nom");
+                    
+                    if($remove) {
+                        /** @var UserModel|ArticleModel $this */
+                        $this->deleteImage(ROOT . "/public/images/$this->table/$this->image");
+                    }
+
+                    return $nom;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Méthode de suppression d'une image
+     *
+     * @param string $path
+     * @return boolean
+     */
+    public function deleteImage(string $path): bool
+    {
+        if(file_exists($path)) {
+            unlink($path);
+
+            return true;  // arrête l'execution de la fonction s'il arrive ici
+        }
+        return false;
     }
 
     /**

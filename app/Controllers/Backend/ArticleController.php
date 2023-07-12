@@ -44,6 +44,7 @@ class ArticleController extends Controller
             ->setDescription($description)
             ->setActif($actif)
             ->setUserId($_SESSION['LOGGED_USER']['id'])
+            ->setImage($_FILES['image'])
             ->create()
             ;
             $_SESSION['messages']['success'] = "Article créé avec succès";
@@ -89,6 +90,7 @@ class ArticleController extends Controller
                 ->setTitre($titre)
                 ->setDescription($description)
                 ->setActif($actif)
+                ->setImage($_FILES['image'])
                 ->update();
             
             $_SESSION['messages']['success'] = "Article modifié avec succès";

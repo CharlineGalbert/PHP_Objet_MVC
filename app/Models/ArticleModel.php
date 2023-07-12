@@ -10,6 +10,7 @@ class ArticleModel extends Model
         protected ?\Datetime $created_at = null,
         protected ?bool $actif = null,
         protected ?int $user_id = null,
+        protected ?string $image = null,
         )
     {
         $this->table = 'articles';
@@ -155,6 +156,37 @@ class ArticleModel extends Model
         public function setUserId(?int $user_id): self
         {
                 $this->user_id = $user_id;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of image
+         *
+         * @return ?string
+         */
+        public function getImage(): ?string
+        {
+                return $this->image;
+        }
+
+        /**
+         * Set the value of image
+         *
+         * @param null|string|array $image
+         *
+         * @return self
+         */
+        public function setImage(null|string|array $image): self
+        {
+                if($image && is_array($image)) {
+                        $imageName = $this->uploadImage($image, $this->image ? true : false);
+                } elseif (is_string($image)) {
+                        $imageName = $image;
+                } else {
+                        $imageName = null;
+                }
+                $this->image = $imageName;
 
                 return $this;
         }

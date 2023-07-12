@@ -5,8 +5,11 @@
         <?php foreach($articles as $article):?>
             <div class="col-md-4">
                 <div class="card <?= $article->actif ? 'border-success' : 'border-danger'; ?>">
-                    <h2 class="card-header"><?= $article->titre;?></h2>
+                    <?php if($article->image): ?>
+                        <img src="/images/articles/<?= $article->image; ?>" alt="<?= $article->titre; ?>" class="card-img-top" loading="lazy">
+                    <?php endif; ?>
                     <div class="card-body">
+                        <h2 class="card-title"><?= $article->titre;?></h2>
                         <p class="text-muted"><?= date_format(new \DateTime($article->created_at), 'Y/m/d');?></p>
                         <p class="card-text"><?= $article->description;?></p>
                         <p class="text-actif-article <?= $article->actif ? 'text-success' : 'text-danger'; ?>"><?= $article->actif ? 'Actif' : 'Inactif';?></p>
