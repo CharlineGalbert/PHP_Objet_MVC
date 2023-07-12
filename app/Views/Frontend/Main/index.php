@@ -1,3 +1,5 @@
+<?php include_once '_slider.php'?>
+
 <section class="container mt-4">
     <h2 class="text-center">Derniers articles</h2>
     <div class="row gy-4 mt-4">
