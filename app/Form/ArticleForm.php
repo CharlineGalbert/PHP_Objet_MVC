@@ -42,7 +42,7 @@ class ArticleForm extends Form
         ->endDiv()
         // ternaire dans un ternaire
         ->addImage($article ? ($article->getImage() ? "/images/articles/{$article->getImage()}" :  null) : null,[
-            'class' => 'img-fluid rounded mt-2',
+            'class' => 'img-fluid rounded mt-2 img-form-preview',
             'loading' => "lazy",
             'alt' => $article ? ($article->getImage() ? $article->getTitre() : null) : null,
         ])
