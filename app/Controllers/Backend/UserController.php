@@ -9,6 +9,10 @@ use App\Models\UserModel;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private UserModel $userModel = new UserModel
+    ){
+    }
     #[Route('/admin/users', 'admin.users', ['GET', 'POST'])]
     public function index(): void
     {
@@ -19,7 +23,7 @@ class UserController extends Controller
         $_SESSION['token'] = bin2hex(random_bytes(35));
 
         $this->render('Backend/Users/index.php', [
-            'users' => (new UserModel())->findAll(),
+            'users' => $this->userModel->findAll(),
         ]);
     }
 
@@ -28,7 +32,7 @@ class UserController extends Controller
     {
         $this->isAdmin();
 
-        $user = (new UserModel)->find($id);
+        $user = $this->userModel->find($id);
 
         if(!$user){
             $_SESSION['messages']['error'] = "Utilisateur non trouvé";
@@ -39,7 +43,7 @@ class UserController extends Controller
             exit();
         }
 
-        $user = (new UserModel)->hydrate($user); //pour avoir accès aux méthodes de la class UserModel
+        $user = $this->userModel->hydrate($user); //pour avoir accès aux méthodes de la class UserModel
 
         $form =  new UserForm($user);
 
@@ -83,10 +87,10 @@ class UserController extends Controller
     {
         $this->isAdmin();
 
-        $user = (new UserModel())->find(isset($_POST['id']) ? $_POST['id'] : 0);  // objet standard (stdClass)
+        $user = $this->userModel->find(isset($_POST['id']) ? $_POST['id'] : 0);  // objet standard (stdClass)
 
         if($user && hash_equals($_SESSION['token'], $_POST['token'])){
-            $user = (new UserModel())
+            $user = $this->userModel
             ->hydrate($user)  // objet de la class UserModel
             ->delete();
 

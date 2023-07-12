@@ -91,7 +91,7 @@ class Model extends Db
         
         // On boucle sur l'objet pour récupérer tous les champs et les valeurs
         foreach($this as $champ => $valeur) {
-            if($valeur !== null && $champ !== 'table'){
+            if($valeur !== null && $champ !== 'table' && $champ !== 'database'){
                 // actif
             $champs[] = $champ;  // tableau à index
             
@@ -136,7 +136,7 @@ class Model extends Db
         
         // On boucle sur l'objet pour récupérer tous les champs et les valeurs
         foreach($this as $champ => $valeur) {
-            if($valeur !== null && $champ !== 'table' && $champ !== 'id'){
+            if($valeur !== null && $champ !== 'table' && $champ !== 'id' && $champ !== 'database'){
                 // actif
                 $champs[] = "$champ = :$champ";
                 
@@ -168,7 +168,7 @@ class Model extends Db
     public function delete(): ?\PDOStatement
     {
         /** @var UserModel|ArticleModel $this */
-        if($this->image) {
+        if(isset($this->image) ? ($this->image ?: false) : null) {
             $this->deleteImage(ROOT . "/public/images/$this->table/$this->image");
         }
         

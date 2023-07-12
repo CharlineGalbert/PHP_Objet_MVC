@@ -9,11 +9,17 @@ use App\Models\ArticleModel;
 
 class ArticleController extends Controller
 {
+    public function __construct(
+        private ArticleModel $articleModel = new ArticleModel
+    ) {
+    }
+
     #[Route('/admin/articles', 'admin.articles', ['GET', 'POST'])]
     public function article(): void
     {
         $this->isAdmin();
-        $articles = (new ArticleModel())->findAll();
+
+        $articles = $this->articleModel->findAll();
 
         $_SESSION['token'] = bin2hex(random_bytes(35));
 
@@ -39,7 +45,7 @@ class ArticleController extends Controller
             $actif = isset($_POST['actif']) ? true : false;
 
             // On envoie en BDD
-            (new ArticleModel())
+            $this->articleModel
             ->setTitre($titre)
             ->setDescription($description)
             ->setActif($actif)
@@ -66,7 +72,7 @@ class ArticleController extends Controller
     {
         $this->isAdmin();
 
-        $article = (new ArticleModel)->find($id);
+        $article = $this->articleModel->find($id);
 
         if(!$article){
             $_SESSION['messages']['error'] = "Article non trouvé";
@@ -75,7 +81,7 @@ class ArticleController extends Controller
             exit();
         }
 
-        $article = (new ArticleModel)->hydrate($article);
+        $article = $this->articleModel->hydrate($article);
 
         $form =  new ArticleForm($article);
 
@@ -90,7 +96,7 @@ class ArticleController extends Controller
                 ->setTitre($titre)
                 ->setDescription($description)
                 ->setActif($actif)
-                ->setImage($_FILES['image'])
+                ->setImage(!empty($_FILES['image']['name']) ? $_FILES['image'] : null)
                 ->update();
             
             $_SESSION['messages']['success'] = "Article modifié avec succès";
@@ -112,10 +118,10 @@ class ArticleController extends Controller
     {
         $this->isAdmin();
 
-        $article = (new ArticleModel())->find(isset($_POST['id']) ? $_POST['id'] : 0);
+        $article = $this->articleModel->find(isset($_POST['id']) ? $_POST['id'] : 0);
 
         if($article && hash_equals($_SESSION['token'], $_POST['token'])){
-            $article = (new ArticleModel())
+            $article = $this->articleModel
             ->hydrate($article)
             ->delete();
 
@@ -136,7 +142,7 @@ class ArticleController extends Controller
     {
         $this->isAdmin();
 
-        $article = (new ArticleModel())->find($id);
+        $article = $this->articleModel->find($id);
 
         if(!$article) {
             http_response_code(404);
@@ -150,7 +156,7 @@ class ArticleController extends Controller
             return;
         }
 
-        $article = (new ArticleModel)->hydrate($article);
+        $article = $this->articleModel->hydrate($article);
         
         /** @var ArticleModel $article */
         $article

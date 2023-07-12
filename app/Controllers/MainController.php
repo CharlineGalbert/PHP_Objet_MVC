@@ -11,11 +11,11 @@ class MainController extends Controller
     #[Route('/', 'homepage', ['GET'])]
     public function homepage(): void
     {
-        $articles = (new ArticleModel())->findBy(['actif'=> true]);
+        // $articles = (new ArticleModel())->findBy(['actif'=> true]);
+        $articles = (new ArticleModel())->findWithLimit(3, true);
 
         $this->render('/Frontend/Main/index.php', [
             'articles' => $articles,
-            'titlePage' => "Page d'accueil"
         ]);
     }
 }

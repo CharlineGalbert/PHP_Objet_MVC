@@ -16,6 +16,24 @@ class ArticleModel extends Model
         $this->table = 'articles';
     }
 
+
+    public function findWithLimit(int $limit, ?bool $active = false): array
+    {
+        $sql = "SELECT * FROM $this->table";
+
+        $valeurs = [];
+
+        if($active) {
+                $sql .= " WHERE actif = :actif";
+                $valeurs['actif'] = true;
+        }
+
+        $sql .= " ORDER BY created_at DESC LIMIT :limit";
+        $valeurs['limit'] = $limit;
+
+        return $this->runQuery($sql, $valeurs)->fetchAll();
+    }
+
         /**
          * Get the value of id
          *

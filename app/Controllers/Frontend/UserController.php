@@ -10,6 +10,11 @@ use App\Models\UserModel;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private UserModel $userModel = new UserModel
+    ){ 
+    }
+
     #[Route('/login', 'app.user.login', ['GET', 'POST'])]
     public function login(): void
     {
@@ -22,7 +27,7 @@ class UserController extends Controller
             $password = $_POST['password'];
 
             // On cherche si l'email existe en BDD
-            $user = (new UserModel())->findByEmail($email);
+            $user = $this->userModel->findByEmail($email);
 
             if($user && password_verify($password, $user->password)) {
                 $_SESSION['LOGGED_USER'] = [
@@ -67,7 +72,7 @@ class UserController extends Controller
             $password = password_hash($_POST['password'], PASSWORD_ARGON2I);
 
             if($email){
-                (new UserModel())
+                $this->userModel
                     ->setNom($nom)
                     ->setPrenom($prenom)
                     ->setEmail($email)
