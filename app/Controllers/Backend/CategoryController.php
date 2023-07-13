@@ -13,17 +13,31 @@ class CategoryController extends Controller
     ) {
     }
 
-    #[Route('/admin/categories/articles', 'admin.categories.articles', ['GET', 'POST'])]
-    public function category(): void
+    // #[Route('/admin/categories/articles', 'admin.categories.articles', ['GET', 'POST'])]
+    // public function category(): void
+    // {
+    //     $this->isAdmin();
+        
+    //     $articles = $this->categoryModel->getArticlesFromCategory(6);
+    //     // var_dump($articles);
+    //     $_SESSION['token'] = bin2hex(random_bytes(35));
+
+    //     $this->render('Backend/Categories/index.php', [
+    //         'articles' => $articles,
+    //     ]);
+    // }
+
+    #[Route('/admin/categories', 'admin.categories', ['GET', 'POST'])]
+    public function read(): void
     {
         $this->isAdmin();
         
-        $articles = $this->categoryModel->getArticlesFromCategory(6);
-        var_dump($articles);
+        $categories = $this->categoryModel->findAll();
+
         $_SESSION['token'] = bin2hex(random_bytes(35));
 
         $this->render('Backend/Categories/index.php', [
-            'articles' => $articles,
+            'categories' => $categories,
         ]);
     }
 }

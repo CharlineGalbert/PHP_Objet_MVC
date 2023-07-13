@@ -17,7 +17,17 @@ class ArticleModel extends Model
         $this->table = 'articles';
     }
 
-    
+    /**
+     * Méthode pour récupérer la catégorie d'un article
+     *
+     * @return array
+     */
+    public function getCategorie(): array
+    {
+        $sql = "SELECT c.* FROM categories c JOIN articles a ON c.id = a.category_id WHERE a.id = $this->id";
+
+        return $this->runQuery($sql)->fetchAll();
+    }
 
     public function findWithLimit(int $limit, ?bool $active = false): array
     {
