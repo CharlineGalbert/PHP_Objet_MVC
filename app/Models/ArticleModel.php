@@ -11,6 +11,7 @@ class ArticleModel extends Model
         protected ?bool $actif = null,
         protected ?int $user_id = null,
         protected ?string $image = null,
+        protected ?int $category_id = null,
         )
     {
         $this->table = 'articles';
@@ -205,6 +206,30 @@ class ArticleModel extends Model
                         $imageName = null;
                 }
                 $this->image = $imageName;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of category_id
+         *
+         * @return ?int
+         */
+        public function getCategoryId(): ?int
+        {
+                return $this->category_id;
+        }
+
+        /**
+         * Set the value of category_id
+         *
+         * @param ?int $category_id
+         *
+         * @return self
+         */
+        public function setCategoryId(?int $category_id): self
+        {
+                $this->category_id = $category_id;
 
                 return $this;
         }

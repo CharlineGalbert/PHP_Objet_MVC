@@ -30,7 +30,7 @@
                     <?php endif; ?>
                     <a href="/logout" class="btn btn-danger">Logout</a>
                 <?php else : ?>
-                    <a href="/login" class="btn btn-light">Caca</a>
+                    <a href="/login" class="btn btn-light">Login</a>
                 <?php endif; ?>
             </div>
         </div>
