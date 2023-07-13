@@ -13,7 +13,13 @@ class CategoryModel extends Model
         $this->table = 'categories';
     }
 
-    
+    public function getArticlesFromCategory(int $categoryId): array
+    {
+        // "SELECT * FROM articles WHERE category_id = 2"
+        $sql = "SELECT a.*, c.nom FROM articles a JOIN categories c ON a.category_id = c.id WHERE category_id = $categoryId ";
+        return $this->runQuery($sql)->fetchAll();
+    }
+
 
         /**
          * Get the value of id

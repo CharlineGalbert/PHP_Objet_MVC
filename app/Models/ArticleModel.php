@@ -17,6 +17,7 @@ class ArticleModel extends Model
         $this->table = 'articles';
     }
 
+    
 
     public function findWithLimit(int $limit, ?bool $active = false): array
     {
