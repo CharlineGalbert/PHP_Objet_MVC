@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Core\Route;
 use App\Form\ArticleForm;
 use App\Models\ArticleModel;
+use App\Models\CategoryModel;
 
 class ArticleController extends Controller
 {
@@ -33,6 +34,7 @@ class ArticleController extends Controller
     {
         // On vérifie l'admin
         $this->isAdmin();
+
 
         // Instance du formulaire
         $form = new ArticleForm();
@@ -73,6 +75,7 @@ class ArticleController extends Controller
         $this->isAdmin();
 
         $article = $this->articleModel->find($id);
+        
 
         if(!$article){
             $_SESSION['messages']['error'] = "Article non trouvé";

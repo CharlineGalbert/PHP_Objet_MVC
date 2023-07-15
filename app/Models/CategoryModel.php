@@ -13,13 +13,28 @@ class CategoryModel extends Model
         $this->table = 'categories';
     }
 
+    /**
+     * Méthode de récupération des articles rattachés à une catégorie
+     *
+     * @param integer $categoryId
+     * @return array
+     */
     public function getArticlesFromCategory(int $categoryId): array
     {
         // "SELECT * FROM articles WHERE category_id = 2"
-        $sql = "SELECT a.*, c.nom FROM articles a JOIN categories c ON a.category_id = c.id WHERE category_id = $categoryId ";
-        return $this->runQuery($sql)->fetchAll();
+        $sql = "SELECT a.*, c.nom FROM articles a JOIN $this->table c ON a.category_id = c.id WHERE category_id = :categoryId ";
+        return $this->runQuery($sql, ['categoryId' => $categoryId])->fetchAll();
     }
 
+    /**
+     * Méthode de récupération de toutes les catégories actives (ordre alphabétique)
+     *
+     * @return array
+     */
+    public function getActivesCategories(): array
+    {
+        return $this->runQuery("SELECT * FROM $this->table WHERE actif = 1 ORDER BY nom ASC")->fetchAll();
+    }
 
         /**
          * Get the value of id

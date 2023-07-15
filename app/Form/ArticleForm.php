@@ -4,11 +4,27 @@ namespace App\Form;
 
 use App\Core\Form;
 use App\Models\ArticleModel;
+use App\Models\CategoryModel;
 
 class ArticleForm extends Form
 {
     public function __construct(?ArticleModel $article = null)
     {
+        $category = new CategoryModel();
+        $activesCategories = $category->getActivesCategories();
+
+        // préparation du tabelau d'options pour le addselect
+        $tabActivesCategories = [];
+
+        foreach ($activesCategories as $cat) {
+            $tabActivesCategories[$cat->id] = [
+                'label' => $cat->nom,
+                'attributs' =>  ['selected' => $article ? ($article->getCategoryId() == $cat->id ? true : null) : null]
+            ];
+        }
+
+        // if article->getCat == inactive => rajouter dans tableau cette cat
+
         $this
         ->startForm('POST', '#', [
             'class' => 'form card p-3 w-75 mx-auto',
@@ -46,6 +62,14 @@ class ArticleForm extends Form
             'loading' => "lazy",
             'alt' => $article ? ($article->getImage() ? $article->getTitre() : null) : null,
         ])
+        ->startDiv(['class' => 'mb-3'])
+            ->addLabel('roles', "Catégorie :", ['class' => 'form-label'])
+            ->addSelect('roles', $tabActivesCategories,
+            [
+                'class' => 'form-control'
+            ]
+        )
+        ->endDiv()
         ->startDiv(['class' => 'mb-3 form-check'])
         ->addInput('checkbox', 'actif', [
             'class' => 'form-check-input',

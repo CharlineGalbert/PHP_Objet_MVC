@@ -7,7 +7,9 @@
                 <div class="card <?= $categorie->actif ? 'border-success' : 'border-danger'; ?>">
                     <h2 class="card-header"><?= $categorie->nom ;?></h2>
                     <div class="card-body">
-                    <p class="text-actif-article <?= $categorie->actif ? 'text-success' : 'text-danger'; ?>"><?= $categorie->actif ? 'Actif' : 'Inactif';?></p>                        <p class="card-text"><?= date_format(new \DateTime($categorie->created_at), 'Y/m/d');?></p>
+                    <p class="text-actif-article <?= $categorie->actif ? 'text-success' : 'text-danger'; ?>"><?= $categorie->actif ? 'Actif' : 'Inactif';?></p>                        
+                    <p class="card-text">id=<?= $categorie->id ;?></p>
+                    <p class="card-text"><?= date_format(new \DateTime($categorie->created_at), 'Y/m/d');?></p>
                         <div class="d-flex justify-content-between">
                             <a href="/admin/categories/edit/<?=$categorie->id; ?>" class="btn btn-warning">Modifier</a>
                             <form action="/admin/categories/delete" method="POST" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer cette catégorie ?')">
