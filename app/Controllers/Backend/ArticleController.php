@@ -6,7 +6,6 @@ use App\Core\Controller;
 use App\Core\Route;
 use App\Form\ArticleForm;
 use App\Models\ArticleModel;
-use App\Models\CategoryModel;
 
 class ArticleController extends Controller
 {
@@ -40,19 +39,21 @@ class ArticleController extends Controller
         $form = new ArticleForm();
 
         // Validation du form
-        if($form->validate($_POST, ['titre', 'description'])){
+        if($form->validate($_POST, ['titre', 'description', 'categorie'])){
             // Nettoyage des données
             $titre = strip_tags($_POST['titre']);
             $description = strip_tags($_POST['description']);
             $actif = isset($_POST['actif']) ? true : false;
+            $categorie = $_POST['categorie'];
 
             // On envoie en BDD
             $this->articleModel
             ->setTitre($titre)
             ->setDescription($description)
             ->setActif($actif)
-            ->setUserId($_SESSION['LOGGED_USER']['id'])
             ->setImage($_FILES['image'])
+            ->setCategoryId($categorie)
+            ->setUserId($_SESSION['LOGGED_USER']['id'])
             ->create()
             ;
             $_SESSION['messages']['success'] = "Article créé avec succès";
@@ -88,11 +89,12 @@ class ArticleController extends Controller
 
         $form =  new ArticleForm($article);
 
-        if($form->validate($_POST, ['titre', 'description'])){
+        if($form->validate($_POST, ['titre', 'description', 'categorie'])){
           
             $titre = strip_tags($_POST['titre']);
             $description = strip_tags($_POST['description']);
             $actif = isset($_POST['actif']) ? true : false;
+            $categorie = $_POST['categorie'];
             
             /** @var ArticleModel $article */
             $article
@@ -100,6 +102,7 @@ class ArticleController extends Controller
                 ->setDescription($description)
                 ->setActif($actif)
                 ->setImage(!empty($_FILES['image']['name']) ? $_FILES['image'] : null)
+                ->setCategoryId($categorie)
                 ->update();
             
             $_SESSION['messages']['success'] = "Article modifié avec succès";

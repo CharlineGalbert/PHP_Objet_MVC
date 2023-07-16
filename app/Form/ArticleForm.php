@@ -10,16 +10,23 @@ class ArticleForm extends Form
 {
     public function __construct(?ArticleModel $article = null)
     {
-        $category = new CategoryModel();
-        $activesCategories = $category->getActivesCategories();
-
+        $activesCategories = (new CategoryModel)->getActivesCategories();
+        
         // préparation du tabelau d'options pour le addselect
         $tabActivesCategories = [];
 
-        foreach ($activesCategories as $cat) {
-            $tabActivesCategories[$cat->id] = [
-                'label' => $cat->nom,
-                'attributs' =>  ['selected' => $article ? ($article->getCategoryId() == $cat->id ? true : null) : null]
+        if($article && $article->getCategory()->actif == 0){
+            $tabActivesCategories[$article->getCategory()->id] = [
+                'label' => $article->getCategory()->nom,
+                'attributs' =>  ['selected' => true]
+            ];
+        }
+
+        foreach ($activesCategories as $category) {
+            // var_dump($article->getCategoryId() == $category->id, $article, $category->id);
+            $tabActivesCategories[$category->id] = [
+                'label' => $category->nom,
+                'attributs' =>  ['selected' => $article ? ($article->getCategoryId() == $category->id ? true : null) : null]
             ];
         }
 
@@ -63,8 +70,8 @@ class ArticleForm extends Form
             'alt' => $article ? ($article->getImage() ? $article->getTitre() : null) : null,
         ])
         ->startDiv(['class' => 'mb-3'])
-            ->addLabel('roles', "Catégorie :", ['class' => 'form-label'])
-            ->addSelect('roles', $tabActivesCategories,
+            ->addLabel('categorie', "Catégorie :", ['class' => 'form-label'])
+            ->addSelect('categorie', $tabActivesCategories,
             [
                 'class' => 'form-control'
             ]
