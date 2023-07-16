@@ -19,7 +19,12 @@ class ArticleController extends Controller
     {
         $this->isAdmin();
 
-        $articles = $this->articleModel->findAll();
+        $articlesStd = $this->articleModel->findAll();
+
+        $articles = [];
+        foreach($articlesStd as $article){
+            $articles[] = (new ArticleModel())->hydrate($article);
+        }
 
         $_SESSION['token'] = bin2hex(random_bytes(35));
 
@@ -33,7 +38,6 @@ class ArticleController extends Controller
     {
         // On vérifie l'admin
         $this->isAdmin();
-
 
         // Instance du formulaire
         $form = new ArticleForm();

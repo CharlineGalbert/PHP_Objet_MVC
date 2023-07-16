@@ -36,13 +36,13 @@ class Routeur
                 $controller = new $controllerName();
 
                 // On récupère seulement les paramètres potentiels
-                $matches = array_slice($matches, 1);  // on récup. le tabelau matches et on garde à partir de l'index 1
+                $matches = array_slice($matches, 1);  // on récup. le tableau matches et on garde à partir de l'index 1
                 // var_dump($matches);
 
                 // On éxecute la méthode du controller pour afficher la page
                 // ArticleController->edit();
                 $controller->$actionName(...$matches); //... récupère toutes les valeurs du tableau $matches
-
+                
                 return;
             }
         }

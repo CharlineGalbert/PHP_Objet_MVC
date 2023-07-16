@@ -10,7 +10,7 @@ class Main
 
     private function initRouter():void
     {
-        // On veut récupérer dynamiquement tous less fichiers
+        // On veut récupérer dynamiquement tous les fichiers
         // dans le dossier Controllers
         $files = glob(\dirname(__DIR__) . "/Controllers/*.php"); // on récupère tous les fichiers qui ont l'extension .php dans le dossier Controllers
         

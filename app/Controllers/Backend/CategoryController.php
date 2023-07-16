@@ -142,5 +142,44 @@ class CategoryController extends Controller
         header('Location: /admin/categories');
         exit();
     }
+
+    #[Route('/admin/categories/switch/([0-9]+)', 'admin.categories.switch', ['GET'])] // le numero de l'url est récup/et passé en paramètre dans $id de la fonction 
+    public function switch(int $id): void
+    {
+        $this->isAdmin();
+
+        $category = $this->categoryModel->find($id);
+
+        if(!$category) {
+            http_response_code(404);
+            echo json_encode([
+                'data' => [
+                    'status' => 'Error',
+                    'message' => 'Catégorie non trouvée, veuillez vérifier l\'id',
+                ]
+            ]);
+
+            return;
+        }
+
+        $category = $this->categoryModel->hydrate($category);
+        
+        /** @var CategoryModel $category */
+        $category
+            ->setActif(!$category->getActif()) // i.e toggle
+            ->update();
+        
+        http_response_code(201);
+
+        echo json_encode([
+            'data' => [
+                'status' => 'Success',
+                'message' => 'Catégorie modifiée',
+                'actif' => $category->getActif(),
+            ]
+        ]);
+
+        return; // ou exit();
+    }
     
 }
