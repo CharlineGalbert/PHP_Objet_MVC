@@ -19,7 +19,7 @@ async function sendRequest(input) {  // async : on peut utiliser la fonction n'i
         const card = input.closest('.card');
         const text = card.querySelector('.text-actif-article');
         const data = (await response.json()).data;
-        console.error(data);
+        // console.error(data);
 
         if(data.actif) {
             card.classList.remove('border-danger'); // classList -> récupère toutes les class  - remove -> enlève 1 classe
