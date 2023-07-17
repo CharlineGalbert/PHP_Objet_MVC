@@ -24,7 +24,7 @@ class ArticleModel extends Model
      */
     public function getCategory(): object|bool
     {
-        $sql = "SELECT c.* FROM categories c JOIN $this->table a ON c.id = a.category_id WHERE a.id = $this->id";
+        $sql = "SELECT c.* FROM categories c JOIN $this->table a ON c.id = a.category_id WHERE a.id = $this->id";  // mettre un marqueur à la place de $this->id
 
         return $this->runQuery($sql)->fetch();
     }

@@ -4,7 +4,7 @@ namespace App\Models;
 class CategoryModel extends Model
 {
     public function __construct(
-        protected ?int $id = null,
+        protected ?int $id = null, // dispo dans cette classe et dans la classe étendue Model
         protected ?string $nom = null,
         protected ?bool $actif = null,
         protected ?\Datetime $created_at = null,
@@ -21,7 +21,6 @@ class CategoryModel extends Model
      */
     public function getArticlesFromCategory(int $categoryId): array
     {
-        // "SELECT * FROM articles WHERE category_id = 2"
         $sql = "SELECT a.*, c.nom FROM articles a JOIN $this->table c ON a.category_id = c.id WHERE category_id = :categoryId ";
         return $this->runQuery($sql, ['categoryId' => $categoryId])->fetchAll();
     }
@@ -131,5 +130,10 @@ class CategoryModel extends Model
 
                 return $this;
         }
+
+        // public function __set(string $name, mixed $value) { 
+        //         /** méthode magique qui s'exécute à chaque fois
+        //          *  qu'on utilise un setter */
+        // }
 }
     

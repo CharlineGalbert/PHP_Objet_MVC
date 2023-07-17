@@ -12,7 +12,7 @@ class ArticleForm extends Form
     {
         $activesCategories = (new CategoryModel)->getActivesCategories();
         
-        // préparation du tabelau d'options pour le addselect
+        // préparation du tableau d'options pour le addselect
         $tabActivesCategories = [];
 
         if($article && $article->getCategory()->actif == 0){
@@ -26,11 +26,9 @@ class ArticleForm extends Form
             // var_dump($article->getCategoryId() == $category->id, $article, $category->id);
             $tabActivesCategories[$category->id] = [
                 'label' => $category->nom,
-                'attributs' =>  ['selected' => $article ? ($article->getCategoryId() == $category->id ? true : null) : null]
+                'attributs' =>  ['selected' => $article ? ($article->getCategoryId() === $category->id ? true : null) : null]
             ];
         }
-
-        // if article->getCat == inactive => rajouter dans tableau cette cat
 
         $this
         ->startForm('POST', '#', [
@@ -70,8 +68,8 @@ class ArticleForm extends Form
             'alt' => $article ? ($article->getImage() ? $article->getTitre() : null) : null,
         ])
         ->startDiv(['class' => 'mb-3'])
-            ->addLabel('categorie', "Catégorie :", ['class' => 'form-label'])
-            ->addSelect('categorie', $tabActivesCategories,
+        ->addLabel('categorie', "Catégorie :", ['class' => 'form-label'])
+        ->addSelect('categorie', $tabActivesCategories,
             [
                 'class' => 'form-control'
             ]

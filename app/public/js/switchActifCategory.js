@@ -1,23 +1,19 @@
-window.onload = () => {
-// window : fait référence au navigateur
-// onload : une fois que le navigateur a complètement fini de charger la page
-    const switchs = document.querySelectorAll('.switch-actif'); // s'il ne trouve pas -> renvoie undefined~null
+const switchs = document.querySelectorAll('.switch-actif-tag'); // s'il ne trouve pas -> renvoie undefined~null
 
     if(switchs) {
         switchs.forEach((input) => {
             input.addEventListener('change', (e) => {  // e = évènement (event)
-                sendRequest(e.target);  // e.target = la cible de l'évènement  == l'input
+                sendRequestTag(e.target);  // e.target = la cible de l'évènement  == l'input
             });
         });
     }
-}
 
-async function sendRequest(input) {  // async : on peut utiliser la fonction n'importe quand
+async function sendRequestTag(input) {  // async : on peut utiliser la fonction n'importe quand
     const response = await fetch(`/admin/categories/switch/${input.dataset.id}`) 
     
     if(response.status >= 200 && response.status <= 300) {
         const card = input.closest('.card');
-        const text = card.querySelector('.text-actif-article');
+        const text = card.querySelector('.text-actif-tag');
         const data = (await response.json()).data;
         // console.error(data);
 

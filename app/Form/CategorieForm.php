@@ -7,7 +7,7 @@ use App\Models\CategoryModel;
 
 class CategorieForm extends Form
 {
-    public function __construct(?CategoryModel $category = null)
+    public function __construct(?CategoryModel $category = null)  // méthode magique qui s'éxécute quand on instancie la class CategorieForm
     {
         $this
         ->startForm('POST', '#', [
@@ -27,7 +27,7 @@ class CategorieForm extends Form
         ->addInput('checkbox', 'actif', [
             'class' => 'form-check-input',
             'id' => 'actif',
-            'checked' => $category ? $category->getActif() : false
+            'checked' => $category ? $category->getActif() : null
         ])
         ->addLabel('actif', "Actif", ['class' => 'form-check-label'])
         ->endDiv()

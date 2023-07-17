@@ -263,8 +263,16 @@ class Model extends Db
                 if (DateTime::createFromFormat('Y-m-d H:i:s', $valeur) !== false) {
                     $valeur = DateTime::createFromFormat('Y-m-d H:i:s', $valeur);
                 }
+                
                 // $this->setTitre('Test')
                 $this->$setter($valeur);
+                
+                // ou :
+                // if($key === 'created_at' || $key === 'createdAt'){
+                //     $this->$setter(new \DateTime($valeur));
+                // } else {
+                //     $this->$setter($valeur);
+                // }
             }
         }
 

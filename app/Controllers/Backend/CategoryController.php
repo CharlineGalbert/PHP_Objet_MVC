@@ -10,7 +10,7 @@ use App\Models\CategoryModel;
 class CategoryController extends Controller
 {
     public function __construct(
-        private CategoryModel $categoryModel = new CategoryModel
+        private CategoryModel $categoryModel = new CategoryModel  // propriété
     ) {
     }
 
@@ -28,7 +28,7 @@ class CategoryController extends Controller
     //     ]);
     // }
 
-    #[Route('/admin/categories', 'admin.categories', ['GET', 'POST'])]
+    #[Route('/admin/categories', 'admin.categories', ['GET', 'POST'])]  // pas besoin de methode POST ici (car on ne soumet pas de formulaire en méthode POST sur cette page)
     public function read(): void
     {
         $this->isAdmin();
@@ -63,6 +63,8 @@ class CategoryController extends Controller
             ->create()
             ;
             $_SESSION['messages']['success'] = "Catégorie créée avec succès";
+           
+            http_response_code(301);  // redirection permanente
 
             header('Location: /admin/categories');
             exit();
@@ -72,7 +74,7 @@ class CategoryController extends Controller
 
         // Vue
         $this->render('Backend/Categories/create.php', [
-            'form' => $form->create(),
+            'form' => $form->create(),  // permet de renvoyer le form en HTML
         ]);
     }
 
@@ -86,6 +88,8 @@ class CategoryController extends Controller
         if(!$category){
             $_SESSION['messages']['error'] = "Catégorie non trouvée";
 
+            http_response_code(404);
+
             header('Location: /admin/categories');
             exit();
         }
@@ -95,7 +99,6 @@ class CategoryController extends Controller
         $form =  new CategorieForm($category);  // on passe $category en paramètre du form pour récupérer les infos de l'objet et pourvoir pré-remplir les champs du formulaire
 
         if($form->validate($_POST, ['nom'])){
-          
             $nom = strip_tags($_POST['nom']);
             $actif = isset($_POST['actif']) ? true : false;
             
@@ -107,6 +110,8 @@ class CategoryController extends Controller
             
             $_SESSION['messages']['success'] = "Catégorie modifiée avec succès";
             
+            http_response_code(301);
+
             header('Location: /admin/categories');
             exit();
         } elseif ($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -114,7 +119,6 @@ class CategoryController extends Controller
         }
 
         $this->render('Backend/Categories/edit.php', [
-            'category' => $category,
             'form' => $form->create(),
         ]);
     }
