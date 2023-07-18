@@ -25,6 +25,7 @@
                             <div class="dropdown-menu" aria-labelledby="triggerId">
                                 <a class="dropdown-item" href="/admin/articles">Articles</a>
                                 <a class="dropdown-item" href="/admin/users">Users</a>
+                                <a class="dropdown-item" href="/admin/categories">Catégories</a>
                             </div>
                         </div>
                     <?php endif; ?>

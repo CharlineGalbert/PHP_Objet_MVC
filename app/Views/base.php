@@ -17,6 +17,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="/js/switchActifArticle.js" defer></script>  <!--defer -> ne bloque pas l'affichage de la page-->
+    <script src="/js/switchActifCategory.js" defer></script>  
     <script src="/js/inputImage.js" defer></script>
 </body>
 

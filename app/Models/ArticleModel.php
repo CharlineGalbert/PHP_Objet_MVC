@@ -17,7 +17,25 @@ class ArticleModel extends Model
         $this->table = 'articles';
     }
 
+    /**
+     * Méthode pour récupérer la catégorie d'un article
+     *
+     * @return object|boolean
+     */
+    public function getCategory(): object|bool
+    {
+        $sql = "SELECT c.* FROM categories c JOIN $this->table a ON c.id = a.category_id WHERE a.id = $this->id";  // mettre un marqueur à la place de $this->id
 
+        return $this->runQuery($sql)->fetch();
+    }
+
+    /**
+     * Méthode pour récupérer un nombre limité d'articles triés du plus récent au plus ancien (created_at)
+     *
+     * @param integer $limit Nombre d'articles à récupérer
+     * @param boolean|null $active Si true, renvoie les articles actifs
+     * @return array
+     */
     public function findWithLimit(int $limit, ?bool $active = false): array
     {
         $sql = "SELECT * FROM $this->table";

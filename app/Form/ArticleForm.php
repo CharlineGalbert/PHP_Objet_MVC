@@ -4,11 +4,32 @@ namespace App\Form;
 
 use App\Core\Form;
 use App\Models\ArticleModel;
+use App\Models\CategoryModel;
 
 class ArticleForm extends Form
 {
     public function __construct(?ArticleModel $article = null)
     {
+        $activesCategories = (new CategoryModel)->getActivesCategories();
+        
+        // préparation du tableau d'options pour le addselect
+        $tabActivesCategories = [];
+
+        if($article && $article->getCategory()->actif == 0){
+            $tabActivesCategories[$article->getCategory()->id] = [
+                'label' => $article->getCategory()->nom,
+                'attributs' =>  ['selected' => true]
+            ];
+        }
+
+        foreach ($activesCategories as $category) {
+            // var_dump($article->getCategoryId() == $category->id, $article, $category->id);
+            $tabActivesCategories[$category->id] = [
+                'label' => $category->nom,
+                'attributs' =>  ['selected' => $article ? ($article->getCategoryId() === $category->id ? true : null) : null]
+            ];
+        }
+
         $this
         ->startForm('POST', '#', [
             'class' => 'form card p-3 w-75 mx-auto',
@@ -46,6 +67,14 @@ class ArticleForm extends Form
             'loading' => "lazy",
             'alt' => $article ? ($article->getImage() ? $article->getTitre() : null) : null,
         ])
+        ->startDiv(['class' => 'mb-3'])
+        ->addLabel('categorie', "Catégorie :", ['class' => 'form-label'])
+        ->addSelect('categorie', $tabActivesCategories,
+            [
+                'class' => 'form-control'
+            ]
+        )
+        ->endDiv()
         ->startDiv(['class' => 'mb-3 form-check'])
         ->addInput('checkbox', 'actif', [
             'class' => 'form-check-input',

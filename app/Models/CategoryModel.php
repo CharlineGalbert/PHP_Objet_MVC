@@ -4,7 +4,7 @@ namespace App\Models;
 class CategoryModel extends Model
 {
     public function __construct(
-        protected ?int $id = null,
+        protected ?int $id = null, // dispo dans cette classe et dans la classe étendue Model
         protected ?string $nom = null,
         protected ?bool $actif = null,
         protected ?\Datetime $created_at = null,
@@ -13,7 +13,27 @@ class CategoryModel extends Model
         $this->table = 'categories';
     }
 
-    
+    /**
+     * Méthode de récupération des articles rattachés à une catégorie
+     *
+     * @param integer $categoryId
+     * @return array
+     */
+    public function getArticlesFromCategory(int $categoryId): array
+    {
+        $sql = "SELECT a.*, c.nom FROM articles a JOIN $this->table c ON a.category_id = c.id WHERE category_id = :categoryId ";
+        return $this->runQuery($sql, ['categoryId' => $categoryId])->fetchAll();
+    }
+
+    /**
+     * Méthode de récupération de toutes les catégories actives (ordre alphabétique)
+     *
+     * @return array
+     */
+    public function getActivesCategories(): array
+    {
+        return $this->runQuery("SELECT * FROM $this->table WHERE actif = 1 ORDER BY nom ASC")->fetchAll();
+    }
 
         /**
          * Get the value of id
@@ -110,5 +130,10 @@ class CategoryModel extends Model
 
                 return $this;
         }
+
+        // public function __set(string $name, mixed $value) { 
+        //         /** méthode magique qui s'exécute à chaque fois
+        //          *  qu'on utilise un setter */
+        // }
 }
     

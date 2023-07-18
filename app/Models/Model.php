@@ -248,13 +248,31 @@ class Model extends Db
     {
         // On parcourt le tableau de données
         foreach($donnees as $key => $valeur){
+            // On enlève le "_" du champ de la table pour faire le setter ou getter
+            if(str_contains($key, '_')){
+                $keyArray = explode('_', $key);
+                $keyArray[1] = ucfirst($keyArray[1]);
+                $key = implode('', $keyArray);
+            }
             // On récupère les setters
             $setter = 'set' . ucfirst($key);  // ucfirst = mettre la première lettre en majuscule
             
             // On vérifie que la méthode existe
             if(method_exists($this, $setter)) {
+                // Si la valeur est une date sous forme de chaine de caractère, on la transforme en type DateTime
+                if (DateTime::createFromFormat('Y-m-d H:i:s', $valeur) !== false) {
+                    $valeur = DateTime::createFromFormat('Y-m-d H:i:s', $valeur);
+                }
+                
                 // $this->setTitre('Test')
                 $this->$setter($valeur);
+                
+                // ou :
+                // if($key === 'created_at' || $key === 'createdAt'){
+                //     $this->$setter(new \DateTime($valeur));
+                // } else {
+                //     $this->$setter($valeur);
+                // }
             }
         }
 
